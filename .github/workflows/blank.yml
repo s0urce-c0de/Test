@@ -13,5 +13,29 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Enable tmate debugging of manually-triggered workflows if the input option was provided
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
+      - name: dfh
+        run: sudo df -h
+      - name: Clean up space
+        run: |
+          # Android
+          sudo rm -rf /usr/local/lib/android
+          # .NET
+          sudo rm -rf /usr/share/dotnet
+          # Haskell
+          sudo rm -rf /opt/ghc /usr/local/.ghcup
+          # Tools cache
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+          # Big useless bs
+          sudo apt-get purge -y '^aspnetcore-.*'
+          sudo apt-get purge -y '^dotnet-.*' --fix-missing
+          sudo apt-get purge -y '^llvm-.*' --fix-missing
+          sudo apt-get purge -y 'php.*' --fix-missing
+          sudo apt-get purge -y '^mongodb-.*' --fix-missing
+          sudo apt-get purge -y '^mysql-.*' --fix-missing
+          sudo apt-get purge -y azure-cli google-chrome-stable firefox powershell mono-devel libgl1-mesa-dri --fix-missing
+          sudo apt-get purge -y google-cloud-sdk --fix-missing
+          sudo apt-get purge -y google-cloud-cli --fix-missing
+          sudo apt-get autoremove -y
+          sudo apt-get clean
+      - name: dfh2
+        run: sudo df -h
